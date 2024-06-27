@@ -12,19 +12,21 @@
                     <div class="cart-engtext">{{ cart.enname }}</div>
                     <div class="cart-price">
                         <div class="price">￥{{ cart.price }}</div>
-                        <div class="stepper"><van-stepper v-model="cart.count" theme="round" button-size="22" disable-input /></div>
+                        <div class="stepper"><van-stepper v-model="cart.count" @change="(newValue) => changeNum(newValue, cart)" theme="round" button-size="22" disable-input /></div>
                     </div>
                 </div>
             </div>
             <template #right>
-                <van-button square text="删除" type="danger" class="delete-button" />
+                <van-button square text="删除" type="danger" class="delete-button" @click="deleteCar(cart)"/>
             </template>
         </van-swipe-cell>
     </div>
 </template>
 
 <script setup>
-import { ref, watch, watchEffect,defineProps, onMounted } from 'vue'
+import { ref, watch, watchEffect,defineProps } from 'vue'
+import axiosInstance from '@/utils/request';
+import { showFailToast } from 'vant';
 
 //接收父组件传入的全选值
 const props = defineProps(['ischecked','list'])
@@ -34,6 +36,15 @@ const carts = ref(props.list.map(cart => ({
     ...cart,
     checked: props.ischecked 
 })));
+
+// 监听父组件传入的list属性变化
+watch(() => props.list, (newList) => {
+    console.log(newList)
+    carts.value = newList.map(cart => ({
+        ...cart,
+        checked: props.ischecked
+    }));
+});
 
 //全选按钮
 watch(()=> props.ischecked,(newVal)=> {
@@ -54,7 +65,7 @@ const computeTotalPrice = ()=>{
     return total.toFixed(2)
 }
 
-const emit = defineEmits(["update:checked","updateTotalPrice"]);
+const emit = defineEmits(["update:checked","updateTotalPrice","updateCartLists"]);
 watchEffect(()=>{
     // 检查是否所有的cart都被选中
     const allChecked = carts.value.every(cart => cart.checked);
@@ -68,8 +79,29 @@ watchEffect(()=>{
     emit('updateTotalPrice', totalPrice) 
 })
 
+//更改购物车商品的数量
+const changeNum = (value,cart)=>{
+    axiosInstance.post('/modifyShopcartCount',{
+        sid: cart.sid,
+        count: value
+    }).then((res)=>{
+        if(res.data.code !== 6000){
+            showFailToast('修改商品数量失败')
+        }
+    })
+}
 
-
+//删除当前购物车的商品
+const deleteCar = (val) =>{
+    axiosInstance.post('/removeShopcart',{
+        sids: JSON.stringify([val.sid])
+    }).then((res)=>{
+        if(res.data.code == 7000){
+            //通知父重新获取商品购物车的数据
+            emit('updateCartLists') // 发出事件
+        }
+    })
+}
 </script>
 
 <style scoped>
@@ -101,13 +133,13 @@ watchEffect(()=>{
 }
 .cart-chstext div:nth-child(1){
     color: #222222;
-    font-size: 16px;
+    font-size: 15px;
 }
 .cart-chstext div:nth-child(2){
     color: #777777;
     margin-left: 16px;
     line-height: 23px;
-    font-size: 14px;
+    font-size: 12px;
 }
 .cart-engtext{
     font-size: 14px;

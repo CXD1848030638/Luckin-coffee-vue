@@ -7,7 +7,7 @@
         </div>
         <div class="cart-image"><img src="../../public/Iconimg/shopbag_bg.png" alt=""></div>
         <!-- 商品卡片 -->
-        <div class="cartList"><CartList @update:checked="getcheckedAll" @updateTotalPrice="getTotalPrice" :list="cartLists" :ischecked="checkedAll" v-if="cartLists.length != 0"></CartList></div>
+        <div class="cartList"><CartList @update:checked="getcheckedAll" @updateTotalPrice="getTotalPrice" @updateCartLists="getCartLists" :list="cartLists" :ischecked="checkedAll" v-if="cartLists.length != 0"></CartList></div>
         <!-- 底部提交订单栏 -->
         <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit" style="margin-bottom:50px;">
             <van-checkbox v-model="checkedAll" checked-color="#0c34ba">全选</van-checkbox>
@@ -23,7 +23,7 @@ import GoLogin from '/src/components/GoLogin.vue';
 import CartList from '/src/components/CartList.vue'
 import axiosInstance from '../utils/request';
 
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 
 // 判断用户是否登录
 const retrievedToken = localStorage.getItem('token');
@@ -53,8 +53,14 @@ const onSubmit = () => {
 
 const cartLists = ref([])
 //获取用户购物车数据
-axiosInstance.get('/findAllShopcart',{}).then(function(res){
-    cartLists.value = res.data.result
+const getCartLists = () =>{
+    axiosInstance.get('/findAllShopcart',{}).then(function(res){
+        cartLists.value = res.data.result
+    })
+}
+
+onMounted(()=>{
+    getCartLists()
 })
 
 const getcheckedAll = (val)=>{
