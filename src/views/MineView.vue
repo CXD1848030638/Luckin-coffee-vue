@@ -41,13 +41,8 @@ import GoLogin from '/src/components/GoLogin.vue';
 import { ref,onMounted } from 'vue';
 import axiosInstance from '../utils/request';
 
-//引入store，用户获取store里的token
-// import { useStore } from 'vuex';  
-// const store = useStore(); 
-
 // 判断用户是否登录
 const retrievedToken = localStorage.getItem('token');
-// const retrievedToken = store.getters.getToken;
 
 const personInfo = ref([])
 const getpersonInfo = () =>{
@@ -55,7 +50,6 @@ const getpersonInfo = () =>{
         personInfo.value = res.data.result[0]
     });
 }
-
 
 onMounted(()=>{
     getpersonInfo()

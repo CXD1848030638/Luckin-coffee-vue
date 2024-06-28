@@ -82,6 +82,7 @@ import { computed, ref } from "vue";
 // 导入axios
 import axiosInstance from "../utils/request";
 import { useRoute, useRouter } from "vue-router";
+import { showSuccessToast } from "vant";
 // 得到route页面路由对象,主要用于获取页面参数
 const route = useRoute();
 const router = useRouter();
@@ -183,6 +184,7 @@ const Addshopcart = () =>{
     rule: combineItem.value
   }).then(function(res){
     console.log(res)
+    showSuccessToast('添加购物袋成功！')
   })
 }
 </script>
