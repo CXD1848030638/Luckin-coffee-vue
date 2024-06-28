@@ -47,7 +47,6 @@ import axiosInstance from '../utils/request';
 
 // 判断用户是否登录
 const retrievedToken = localStorage.getItem('token');
-const retrievedTokense = sessionStorage.getItem('token');
 // const retrievedToken = store.getters.getToken;
 
 const personInfo = ref([])
