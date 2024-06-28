@@ -6,6 +6,8 @@ import MineView from '../views/MineView.vue'
 import SearchView from '../views/SearchView.vue'
 import LoginView from '../views/LoginView.vue'
 import ProDetailView from '../views/ProductDetailView.vue'
+//引入pinia状态管理工具监听用户是否登录
+import { useCounterStore } from '@/stores/counter'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -126,13 +128,18 @@ const router = createRouter({
   ]
 })
 
-//全局路由前置守卫
-// router.beforeEach((to,from,next) => {
-//   if(to.meta.isLogin){
-//     next('/login')
-//   }else{
-//     next()
-//   }
-// })
+//全局路由前置守卫,若用户未登录重定向到登录页面
+router.beforeEach((to,from,next) => {
+  const piniaStore = useCounterStore()
+  if(piniaStore.tokenString){
+    next()
+  }else{
+    if(to.meta.isLogin){
+      next('/login')
+    }else{
+      next()
+    }
+  }
+})
 
 export default router

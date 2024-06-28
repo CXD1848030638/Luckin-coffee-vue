@@ -53,11 +53,7 @@ const retrievedTokense = sessionStorage.getItem('token');
 const personInfo = ref([])
 const getpersonInfo = () =>{
     axiosInstance.get("/findMy",{}).then(function(res){
-        if(retrievedTokense && res.data.code == 700){
-            location.reload()
-        }
         personInfo.value = res.data.result[0]
-
     });
 }
 
