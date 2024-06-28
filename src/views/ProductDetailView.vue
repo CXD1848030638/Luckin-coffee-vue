@@ -203,14 +203,6 @@ axiosInstance.get('/findlike',{
 })
 
 //收藏商品
-// 收藏商品接口
-//   请求地址：http://www.kangliuyong.com:10002/like
-//   请求类型： POST
-//   请求参数： {
-//     appkey: 你的appkey,
-//     pid: 商品pid,
-//     tokenString: token字符串
-//   }
 const productLike = () => {
   if(!findlike.value){
     //收藏商品
