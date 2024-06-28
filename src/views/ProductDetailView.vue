@@ -69,7 +69,7 @@
       <div class="detail-footer">
           <van-action-bar :placeholder="true">
               <van-action-bar-icon icon="bag" text="购物袋" badge="8" />
-              <van-action-bar-icon icon="like" text="已收藏" color="#e4393c" />
+              <van-action-bar-icon :icon="findlike ? 'like' : 'like-o'" :text="findlike ? '已收藏' : '收藏'" color="#e4393c" />
               <van-action-bar-button color="#0c34ba" type="warning" text="加入购物袋" @click="Addshopcart"/>
           </van-action-bar>
       </div>
@@ -187,6 +187,35 @@ const Addshopcart = () =>{
     showSuccessToast('添加购物袋成功！')
   })
 }
+
+//查询用户是否收藏商品
+const findlike = ref(false)
+axiosInstance.get('/findlike',{
+  params:{
+    pid: pid
+  }
+}).then((res)=>{
+  if(res.data.result.length){
+    findlike.value = true
+  }else{
+    findlike.value = false
+  }
+})
+
+//收藏商品
+// 收藏商品接口
+//   请求地址：http://www.kangliuyong.com:10002/like
+//   请求类型： POST
+//   请求参数： {
+//     appkey: 你的appkey,
+//     pid: 商品pid,
+//     tokenString: token字符串
+//   }
+// axiosInstance.post('/notlike',{
+//   pid: pid
+// }).then((res)=>{
+//   console.log(res);
+// })
 </script>
 
 <!-- scoped属性代表让当前样式成为局部样式, 仅对当前组件有效 -->
