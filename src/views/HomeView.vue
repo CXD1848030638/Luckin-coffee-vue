@@ -71,7 +71,7 @@ function goToSearch() {
 axiosInstance.get('/banner', {})
   .then(function (res) {
     // 获取数据成功之后 
-    console.log("获取banner", res.data.result);
+    // console.log("获取banner", res.data.result);
     // 修改状态
     banners.value = res.data.result
   })
@@ -86,7 +86,7 @@ axiosInstance.get('/typeProducts', {
 })
   .then(function (res) {
     // 获取数据成功之后 
-    console.log("获取热门商品", res.data.result);
+    // console.log("获取热门商品", res.data.result);
 
     // 修改状态
     products.value = res.data.result

@@ -15,94 +15,124 @@ const router = createRouter({
       name: 'home',
       component: HomeView,
       meta:{
-        isShowTabBar: true
+        isShowTabBar: true,
+        isLogin:false
       }
     },
     {
       path: '/menu',
       component: MenuView,
       meta:{
-        isShowTabBar:true
+        isShowTabBar:true,
+        isLogin:false
       }
     },
     {
       path: '/cart',
       component: CartView,
       meta:{
-        isShowTabBar:true
+        isShowTabBar:true,
+        isLogin:false
       }
     },
     {
       path: '/mine',
       component: MineView,
       meta:{
-        isShowTabBar:true
+        isShowTabBar:true,
+        isLogin:false
       }
     },
     {
       path:'/search',
       component: SearchView,
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:false
       }
     },
     {
       path:'/login',
       component: LoginView,
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:false
       }
     },
     {
       path:'/productDetail',
       component: ProDetailView,
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/MineInfo',
       component:()=> import('../views/Mine/InfoView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/MineOrder',
       component:()=> import('../views/Mine/OrderView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/MineLike',
       component:()=> import('../views/Mine/LikeView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/MineAdreess',
       component:()=> import('../views/Mine/AddressView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/MineSafe',
       component:()=> import('../views/Mine/SafeView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:true
       }
     },
     {
       path:'/forgetpassword',
       component:()=> import('@/views/ForgetView.vue'),
       meta:{
-        isShowTabBar:false
+        isShowTabBar:false,
+        isLogin:false
+      }
+    },
+    {
+      path:'/ordersubmit',
+      component:()=> import(/* webpackChunkName:"SubmitView" */'@/views/SubmitView.vue'),
+      meta:{
+        isShowTabBar:false,
+        isLogin:true
       }
     }
   ]
 })
+
+//全局路由前置守卫
+// router.beforeEach((to,from,next) => {
+//   if(to.meta.isLogin){
+//     next('/login')
+//   }else{
+//     next()
+//   }
+// })
 
 export default router

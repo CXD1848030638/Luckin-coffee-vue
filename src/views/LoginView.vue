@@ -71,12 +71,9 @@ const getshowreg = (val) =>{
 const userphone = ref('');
 const password = ref('');
 
-//引入store，用于将token存入vuex中
-import { useStore } from 'vuex';  
-const store = useStore();  
-// const storeToken = (token) => {  
-//     store.commit('setToken', token);  
-// } 
+//引入pinia，将获取的token存入pinia中
+import { useCounterStore } from '@/stores/counter'
+const piniaStore = useCounterStore()
 
 //登录功能
 const onSubmit = (values) => {
@@ -108,10 +105,9 @@ const onSubmit = (values) => {
             // }         
             // const retrievedToken = getCookie('token');  
             // console.log(retrievedToken);
-
-            //保存在vuex中
-            // storeToken(res.data.token)
-            store.commit('setToken', res.data.token);  
+            
+            //保存在pinia中
+            piniaStore.setToken(res.data.token)
             
             //登录成功返回上一级页面
             // location.reload()

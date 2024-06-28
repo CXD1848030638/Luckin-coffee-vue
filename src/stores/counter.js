@@ -1,37 +1,21 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-//引入vuex
-import { createStore } from 'vuex'  
 
-export default createStore({  
-  state: {  
-    token: null
-  },  
-  mutations: {
-    setToken(state, token) {
-      state.token = token;
-    },
-    clearToken(state) {
-      state.token = null;
-    },
-  },
-  actions: {
-    // 可以在这里定义异步操作，例如从后端获取 token
-  },
-  getters: {
-    getToken(state) {
-      return state.token;
-    },
-  },  
-})  
-
+const token = localStorage.getItem('token')
 
 export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
+  //保存token的值
+  const tokenString = ref(token)
+  const cartsList = ref([])
+  // const doubleCount = computed(() => count.value * 2)
+  //提交到订单上购物车的数据
+  const setCartsList = (items) => {
+    cartsList.value = items
+  }
+  //更新token的值
+  const setToken = (item) =>{
+    tokenString.value = item
   }
 
-  return { count, doubleCount, increment }
+  return { cartsList, setCartsList, tokenString, setToken }
 })

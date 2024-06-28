@@ -102,6 +102,15 @@ const deleteCar = (val) =>{
         }
     })
 }
+
+//引入pinia状态管理工具
+import { useCounterStore } from '@/stores/counter'
+const pinia = useCounterStore()
+
+//监听carts的变化并将其传入pinia中
+watch(() => carts, (val) => {
+    pinia.setCartsList(val.value)
+},{deep:true,immediate:true})
 </script>
 
 <style scoped>

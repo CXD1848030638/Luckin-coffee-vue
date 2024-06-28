@@ -24,6 +24,7 @@ import CartList from '/src/components/CartList.vue'
 import axiosInstance from '../utils/request';
 
 import { onMounted, ref } from 'vue'
+import router from '@/router';
 
 // 判断用户是否登录
 const retrievedToken = localStorage.getItem('token');
@@ -43,7 +44,9 @@ const checkedAll = ref(false)
 
 //提交订单
 const onSubmit = () => {
-    console.log('提交订单')
+    router.push({
+        path: "/ordersubmit"
+    })
 };
 
 //修改地址

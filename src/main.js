@@ -11,17 +11,15 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
 
-//引入vuex
-import store from './stores/counter.js'
-
 const app = createApp(App)
+//创建一个pinia实例
+const pinia = createPinia()
 
-app.use(store)
+app.use(pinia)
 
 // 使用vant
 app.use(Vant);
 
-app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
