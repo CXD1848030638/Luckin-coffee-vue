@@ -69,7 +69,7 @@
       <div class="detail-footer">
           <van-action-bar :placeholder="true">
               <van-action-bar-icon icon="bag" text="购物袋" badge="8" />
-              <van-action-bar-icon :icon="findlike ? 'like' : 'like-o'" :text="findlike ? '已收藏' : '收藏'" color="#e4393c" />
+              <van-action-bar-icon :icon="findlike ? 'like' : 'like-o'" :text="findlike ? '已收藏' : '收藏'" color="#e4393c" @click="productLike"/>
               <van-action-bar-button color="#0c34ba" type="warning" text="加入购物袋" @click="Addshopcart"/>
           </van-action-bar>
       </div>
@@ -211,11 +211,27 @@ axiosInstance.get('/findlike',{
 //     pid: 商品pid,
 //     tokenString: token字符串
 //   }
-// axiosInstance.post('/notlike',{
-//   pid: pid
-// }).then((res)=>{
-//   console.log(res);
-// })
+const productLike = () => {
+  if(!findlike.value){
+    //收藏商品
+    axiosInstance.post('/like',{
+      pid: pid
+    }).then((res)=>{
+      if(res.data.code == 800){
+        showSuccessToast('收藏成功！')
+        findlike.value = true
+      }
+    })
+  }else{
+    //取消收藏商品
+    axiosInstance.post('/notlike',{
+      pid: pid
+    }).then((res)=>{
+      console.log(res);
+      findlike.value = false
+    })
+  }
+}
 </script>
 
 <!-- scoped属性代表让当前样式成为局部样式, 仅对当前组件有效 -->
