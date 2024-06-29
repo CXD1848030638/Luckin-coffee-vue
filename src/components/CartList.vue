@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { ref, watch, watchEffect,defineProps } from 'vue'
+import { ref, watch, watchEffect,defineProps, computed } from 'vue'
 import axiosInstance from '@/utils/request';
 import { showFailToast } from 'vant';
 
@@ -54,8 +54,7 @@ watch(()=> props.ischecked,(newVal)=> {
 })
 
 //计算总价
-// const totalPrice = ref(0)
-const computeTotalPrice = ()=>{
+const computeTotalPrice = computed(()=>{
     let total = 0;
     carts.value.forEach(cart => {
         if(cart.checked){
@@ -63,7 +62,7 @@ const computeTotalPrice = ()=>{
         }
     })
     return total.toFixed(2)
-}
+})
 
 const emit = defineEmits(["update:checked","updateTotalPrice","updateCartLists"]);
 watchEffect(()=>{
@@ -75,8 +74,7 @@ watchEffect(()=>{
     }
 
     //将总价传到父组件
-    const totalPrice = computeTotalPrice()
-    emit('updateTotalPrice', totalPrice) 
+    emit('updateTotalPrice', computeTotalPrice) 
 })
 
 //更改购物车商品的数量
