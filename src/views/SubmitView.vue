@@ -32,10 +32,14 @@
 <script setup>
 //引入自定义组件OrderList
 import OrderList from '@/components/OrderList.vue'
-import { ref,computed } from 'vue'
+import { ref,computed, watchEffect } from 'vue'
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 //引入pinia，并初始化一个实例对象
 import { useCounterStore } from '@/stores/counter';
+import { showFailToast } from 'vant';
 const piniaStore = useCounterStore()
 
 //从pinia中获取购物车提交到结算页面的数据
@@ -61,6 +65,14 @@ const computedPrice = computed(() =>{
     return pricesum.toFixed(2)
 })
 
+//若订单信息为空，跳转到购物车界面
+watchEffect(() =>{
+    if(!orderlist.value[0]){
+        showFailToast('请重新选择商品！')
+        router.push({ path:'/cart' })
+    }
+})
+
 //返回上一页面
 const onClickLeft = () =>{
     history.back()
@@ -68,7 +80,7 @@ const onClickLeft = () =>{
 
 //立即结算
 const orderSubmit = () =>{
-    console.log(orderlist.value);
+    router.push({ path:"/cart" })
 }
 </script>
     

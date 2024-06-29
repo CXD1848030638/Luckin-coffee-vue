@@ -22,9 +22,11 @@
 import GoLogin from '/src/components/GoLogin.vue';
 import CartList from '/src/components/CartList.vue'
 import axiosInstance from '../utils/request';
-
 import { onMounted, ref } from 'vue'
-import router from '@/router';
+import { showToast } from 'vant';
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 // 判断用户是否登录
 const retrievedToken = localStorage.getItem('token');
@@ -41,13 +43,6 @@ const onClickRight = () =>{
 
 //全选按钮
 const checkedAll = ref(false)
-
-//提交订单
-const onSubmit = () => {
-    router.push({
-        path: "/ordersubmit"
-    })
-};
 
 //修改地址
 // const onClickLink = () => {
@@ -77,6 +72,17 @@ const getTotalPrice = (val)=>{
     // 乘以100来移除小数点
     totalPrice.value = val.value * 100;
 }
+
+//提交订单
+const onSubmit = () => {
+    if(totalPrice.value){
+        router.push({
+            path: "/ordersubmit"
+        })
+    }else{
+        showToast('你还未选择要购买的商品！')
+    }
+};
 </script>
 
 <style scoped>
