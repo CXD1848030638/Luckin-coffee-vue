@@ -127,7 +127,7 @@ const orderSubmit = () =>{
 }
 .submitButton{
     width: 94%;
-    margin: 20px auto;
+    margin: 16px auto;
 }
 
 .orderInfo{
