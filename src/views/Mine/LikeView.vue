@@ -6,13 +6,13 @@
     <div class="bgcolor">
         <div class="container">
             <div class="empty" v-if="likeList.length == 0"><van-empty description="没有收藏数据！" /></div>
-            <div class="likeTab" v-else  v-for="l in likeList" :key="l.id">
+            <div class="likeTab" v-else  v-for="l in likeList" :key="l.id" @click="goProductDetail(l.pid)">
                 <div class="likeImg"><img :src="l.smallImg" alt=""></div>
                 <div class="likeCns">{{ l.name }}</div>
                 <div class="likeEns">{{ l.enname }}</div>
                 <div class="likePrice">
                     <div>￥{{ l.price }}</div>
-                    <div @click="notLike(l.pid)"><van-icon name="delete-o" /></div>
+                    <div @click.stop="notLike(l.pid)"><van-icon name="delete-o" /></div>
                 </div>
             </div>
         </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import axiosInstance from '@/utils/request';
 import { showSuccessToast } from 'vant';
 import { onMounted, ref } from 'vue';
@@ -46,6 +47,14 @@ const notLike = (val) => {
             showSuccessToast('取消成功！')
             getAllLike()
         }
+    })
+}
+
+//点击收藏的商品跳转商品详情页
+const goProductDetail = (val) => {
+    router.push({
+        path: "/productDetail",
+        query: { pid: val }
     })
 }
 
