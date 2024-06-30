@@ -127,9 +127,7 @@ const orderSubmit = () =>{
 }
 .submitButton{
     width: 94%;
-    position: absolute;
-    bottom: 15px;
-    left: 3%;
+    margin: 20px auto;
 }
 
 .orderInfo{
@@ -186,8 +184,8 @@ const orderSubmit = () =>{
 
 /* 设置盒子的最大高度，超过高度出现滚动条 */
 .orderScroll{
-    max-height: 300px;
-    overflow-y: auto;
+    /* max-height: 80vh;
+    overflow-y: auto; */
 }
 .orderScroll::-webkit-scrollbar{
     display: none;

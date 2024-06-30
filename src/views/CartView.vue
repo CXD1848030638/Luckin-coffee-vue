@@ -9,7 +9,7 @@
         <!-- 商品卡片 -->
         <div class="cartList"><CartList @update:checked="getcheckedAll" @updateTotalPrice="getTotalPrice" @updateCartLists="getCartLists" :list="cartLists" :ischecked="checkedAll" v-if="cartLists.length != 0"></CartList></div>
         <!-- 底部提交订单栏 -->
-        <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit" style="margin-bottom:50px;">
+        <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit" style="margin-bottom:49px;">
             <van-checkbox v-model="checkedAll" checked-color="#0c34ba">全选</van-checkbox>
             <!-- <template #tip>
                 你的收货地址不支持配送, <span @click="onClickLink">修改地址</span>
@@ -90,8 +90,9 @@ const onSubmit = () => {
     width: 100%;
 }
 .cartList{
-    overflow: auto;
-    height: 440px;
+    /* overflow: auto;
+    height: 440px; */
+    margin-bottom: 110px;
 }
 .cartList::-webkit-scrollbar{
     display: none;
