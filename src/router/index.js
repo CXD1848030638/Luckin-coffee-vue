@@ -124,6 +124,22 @@ const router = createRouter({
         isShowTabBar:false,
         isLogin:true
       }
+    },
+    {
+      path:'/addaddress',
+      component:()=> import(/* webpackChunkName:"AddAdress" */'@/views/Mine/Address/AddAddress.vue'),
+      meta:{
+        isShowTabBar:false,
+        isLogin:true
+      }
+    },
+    {
+      path:'/editaddress',
+      component:()=> import(/* webpackChunkName:"EditAddress" */'@/views/Mine/Address/EditAddress.vue'),
+      meta:{
+        isShowTabBar:false,
+        isLogin:true
+      }
     }
   ]
 })

@@ -3,14 +3,55 @@
     <div class="cart-header">
         <van-nav-bar title="地址管理" left-text="返回" left-arrow @click-left="onClickLeft" :fixed="true" :placeholder="true" />
     </div>
-    <div class="bgcolor">
-        <div class="container">
+    <div class="addressList">
+        <van-address-list
+            v-model="chosenAddressId"
+            :list="list"
+            default-tag-text="默认"
+            :switchable="false"
+            @add="onAdd"
+            @edit="onEdit"
+        />
 
-        </div>
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { showToast } from 'vant';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
+
+const chosenAddressId = ref('1');
+const list = [
+    {
+        id: '1',
+        name: '张三',
+        tel: '13000000000',
+        address: '浙江省杭州市西湖区文三路 138 号东方通信大厦 7 楼 501 室',
+        isDefault: true,
+    },
+    {
+        id: '2',
+        name: '李四',
+        tel: '1310000000',
+        address: '浙江省杭州市拱墅区莫干山路 50 号',
+    }
+];
+
+//新增地址
+const onAdd = () => {
+    router.push({ path: "/addaddress" })
+};
+
+//编辑地址
+const onEdit = (item, index) => {
+    console.log(item,index);
+    showToast('编辑地址:' + index)
+    router.push({ path: "/editaddress" })
+};
+
 //返回上一页面
 const onClickLeft = () =>{
     history.back()
@@ -18,20 +59,20 @@ const onClickLeft = () =>{
 </script>
 
 <style scoped>
-.bgcolor{
+
+/* 默认图标的样式 */
+.addressList /deep/ .van-tag{
     background-color: #0c34ba;
-    width: 100%;
-    height: 100px;
-    position: fixed;
 }
-.container{
-    width: 90%;
-    height: 400px;
-    margin: 0 auto;
-    background-color: #fff;
-    margin-top: 70px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    padding: 10px;
+
+/* 新增地址的样式 */
+.addressList /deep/ .van-button {  
+    background-color: #0c34ba;
+    border-color: #0c34ba;
+}
+.addressList /deep/ .van-address-list__bottom{
+    background: #f5f5f5;
+    border: 1px solid #f5f5f5;
+    margin-bottom: 12px;
 }
 </style>
