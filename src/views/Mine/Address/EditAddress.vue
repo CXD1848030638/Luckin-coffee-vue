@@ -9,6 +9,7 @@
             show-delete
             show-set-default
             :area-columns-placeholder="['请选择', '请选择', '请选择']"
+            :address-info="personInfo"
             @save="onSave"
             @delete="onDelete"
         />
@@ -17,11 +18,32 @@
 
 <script setup>
 import { ref } from 'vue';
+import axiosInstance from '@/utils/request';
 import { showToast } from 'vant';
 import { areaList } from '@vant/area-data'
 
+//引入路由方法
+import { useRoute } from 'vue-router';
+const route = useRoute()
 
-const onSave = () => showToast('save');
+//获取当前要编辑的地址
+const personInfo = ref()
+axiosInstance.get('/findAddressByAid',{
+    params:{
+        aid: route.query.aid
+    }
+}).then((res) =>{
+    if(res.data.code == 40000){
+        personInfo.value = res.data.result[0]
+    }else{
+        showToast('页面出错，请退出重试！')
+    }
+})
+
+const onSave = (val) => {
+    console.log(val);
+    showToast('save')
+};
 const onDelete = () => showToast('delete');
 
 //返回上一页面

@@ -20,8 +20,9 @@
 import { ref, watchEffect } from 'vue';
 import axiosInstance from '@/utils/request';
 import { showToast } from 'vant';
-import { useRouter } from 'vue-router';
 
+//引入路由方法
+import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const chosenAddressId = ref('1');
@@ -41,7 +42,7 @@ watchEffect(() => {
     //得到完整地址
     const resultAddress = addressList.value.map(obj => ({
         ...obj,
-        address: `${obj.province}${obj.city == obj.province ? '' : obj.province}${obj.county}${obj.addressDetail}` 
+        address: `${obj.province}${obj.city == obj.province ? '' : obj.city}${obj.county}${obj.addressDetail}` 
     }))
     list.value = resultAddress
 })
@@ -53,10 +54,11 @@ const onAdd = () => {
 };
 
 //编辑地址
-const onEdit = (item, index) => {
-    // console.log(item,index);
-    showToast('编辑地址:' + index)
-    router.push({ path: "/editaddress" })
+const onEdit = (item) => {
+    router.push({ 
+        path: "/editaddress",
+        query: { aid: item.aid }
+    })
 };
 
 //返回上一页面
