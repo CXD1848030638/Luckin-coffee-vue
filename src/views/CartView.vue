@@ -68,7 +68,7 @@ const getcheckedAll = (val)=>{
 //获取购物车选中的商品总价
 const totalPrice = ref(0)
 const getTotalPrice = (val)=>{
-    console.log(val)
+    // console.log(val)
     // 乘以100来移除小数点
     totalPrice.value = val.value * 100;
 }

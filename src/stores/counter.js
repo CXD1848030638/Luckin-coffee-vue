@@ -18,8 +18,19 @@ export const useCounterStore = defineStore('counter', () => {
     cartsList.value = items
   }
 
+  //保存选择地址的弹出层状态
+  const show  = ref(false)
+  const setShow = (val) => {
+    show.value = val
+  }
+
+  //保存选中的地址
+  const address = ref()
+  const setAddress = (val) =>{
+    address.value = val
+  }
 
   // const doubleCount = computed(() => count.value * 2)
 
-  return { cartsList, setCartsList, tokenString, setToken}
+  return { cartsList, setCartsList, tokenString, setToken, show, setShow, address, setAddress}
 })

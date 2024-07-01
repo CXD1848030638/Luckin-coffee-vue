@@ -1,18 +1,20 @@
 <template>
-    <div>
+    <div class="content">
         <!-- 顶部导航栏 -->
         <div class="cart-header">
             <van-nav-bar title="订单结算" left-text="返回" left-arrow @click-left="onClickLeft" :fixed="true" :placeholder="true" />
         </div>
         <div class="choiceAddress">
-            <div>选择地址<van-icon name="arrow" /></div>
-            <div class="addressNav">
+            <div @click="showpopup">选择地址<van-icon name="arrow" /></div>
+            <!-- 点击选择地址的弹出层 -->
+            <SelectAddress/>
+            <div class="addressNav" v-if="addressInfo">
                 <div class="addressInfo">
-                    <div>康刘用</div>
-                    <div>13212312321</div>
-                    <div>默认</div>
+                    <div>{{ addressInfo.name }}</div>
+                    <div>{{ addressInfo.tel }}</div>
+                    <div v-if="addressInfo.isDefault==1">默认</div>
                 </div>
-                <div class="address">广东省东莞市寮步镇东莞城市学院菜鸟驿站</div>
+                <div class="address">{{ addressInfo.address }}</div>
             </div>
         </div>
         <div class="orderInfo">
@@ -30,16 +32,17 @@
 </template>
     
 <script setup>
-//引入自定义组件OrderList
+//引入自定义组件OrderList,SelectAddress
 import OrderList from '@/components/OrderList.vue'
+import SelectAddress from '@/components/SelectAddress.vue'
 import { ref,computed, watchEffect } from 'vue'
+import { showFailToast } from 'vant';
 
 import { useRouter } from 'vue-router'
 const router = useRouter()
 
 //引入pinia，并初始化一个实例对象
 import { useCounterStore } from '@/stores/counter';
-import { showFailToast } from 'vant';
 const piniaStore = useCounterStore()
 
 //从pinia中获取购物车提交到结算页面的数据
@@ -82,6 +85,18 @@ const onClickLeft = () =>{
 const orderSubmit = () =>{
     router.push({ path:"/cart" })
 }
+
+//控制弹出层
+const showpopup = () =>{
+    piniaStore.setShow(true)
+}
+
+//获取地址
+const addressInfo = ref()
+watchEffect(() =>{
+    addressInfo.value = piniaStore.address
+    console.log(addressInfo.value);
+})
 </script>
     
 <style scoped>
@@ -180,15 +195,6 @@ const orderSubmit = () =>{
 .orderCount div:nth-child(2){
     color: #e4393c;
     font-weight: 600;
-}
-
-/* 设置盒子的最大高度，超过高度出现滚动条 */
-.orderScroll{
-    /* max-height: 80vh;
-    overflow-y: auto; */
-}
-.orderScroll::-webkit-scrollbar{
-    display: none;
 }
 
 </style>

@@ -55,7 +55,8 @@ const route = useRoute()
 <style>
 /* 隐藏浏览器自带的滚动条 */
 body::-webkit-scrollbar {
-  width: 0; /* 调整滚动条宽度 */
+  width: 0px; /* 调整滚动条宽度 */
+  display: none;
 }
 body{
   background-color: #f5f5f5;
