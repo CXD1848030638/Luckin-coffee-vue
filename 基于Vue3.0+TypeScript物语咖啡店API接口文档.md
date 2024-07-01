@@ -252,7 +252,6 @@ token是一个加密字符串
     tokenString: token字符串,
     sids: sid购物车唯一标识集合字符串
   }
-
   其中 sids 值为 JSON.stringify([sid1, sid2, sid3])
 
 ```
@@ -399,8 +398,6 @@ token是一个加密字符串
     tokenString: token字符串,
     status: 订单状态
   }
-
-
   其中 status 值为 0, 1, 2 ==> 0: 全部，1: 进行中，2: 已完成
 ```
 

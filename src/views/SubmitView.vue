@@ -35,8 +35,9 @@
 //引入自定义组件OrderList,SelectAddress
 import OrderList from '@/components/OrderList.vue'
 import SelectAddress from '@/components/SelectAddress.vue'
+import axiosInstance from '@/utils/request';
 import { ref,computed, watchEffect } from 'vue'
-import { showFailToast } from 'vant';
+import { showFailToast, showSuccessToast } from 'vant';
 
 import { useRouter } from 'vue-router'
 const router = useRouter()
@@ -81,11 +82,6 @@ const onClickLeft = () =>{
     history.back()
 }
 
-//立即结算
-const orderSubmit = () =>{
-    router.push({ path:"/cart" })
-}
-
 //控制弹出层
 const showpopup = () =>{
     piniaStore.setShow(true)
@@ -97,6 +93,31 @@ watchEffect(() =>{
     addressInfo.value = piniaStore.address
     console.log(addressInfo.value);
 })
+
+//获得sids: 购物车唯一标识集合----[sid1, sid2, sid3]
+const getSid = orderlist.value.map(order =>{
+    return order.sid
+})
+
+//立即结算
+const orderSubmit = () =>{
+    // console.log('收货人：',addressInfo.value);
+    // console.log('订单信息：',orderlist.value);
+    // console.log(getSid,JSON.stringify(getSid));
+    axiosInstance.post('/pay',{
+        sids: JSON.stringify(getSid),
+        phone: addressInfo.value.tel,
+        address: addressInfo.value.address,
+        receiver: addressInfo.value.name
+    }).then((res) => {
+        console.log(res);
+        if(res.data.code === 60000){
+            showSuccessToast('购买成功！');
+            //跳转订单页面
+            router.push({ path:'/MineOrder' })
+        }
+    })
+}
 </script>
     
 <style scoped>
