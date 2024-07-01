@@ -7,7 +7,10 @@
         </div>
         <div class="cart-image"><img src="../../public/Iconimg/shopbag_bg.png" alt=""></div>
         <!-- 商品卡片 -->
-        <div class="cartList"><CartList @update:checked="getcheckedAll" @updateTotalPrice="getTotalPrice" @updateCartLists="getCartLists" :list="cartLists" :ischecked="checkedAll" v-if="cartLists.length != 0"></CartList></div>
+        <div class="cartList">
+            <CartList @update:checked="getcheckedAll" @updateTotalPrice="getTotalPrice" @updateCartLists="getCartLists" :list="cartLists" :ischecked="checkedAll" v-if="cartLists.length != 0"></CartList>
+            <div v-else style="margin-top: 70px;"><van-empty description="您还未添加商品到购物车" /></div>
+        </div>
         <!-- 底部提交订单栏 -->
         <van-submit-bar :price="totalPrice" button-text="提交订单" @submit="onSubmit" style="margin-bottom:49px;">
             <van-checkbox v-model="checkedAll" checked-color="#0c34ba">全选</van-checkbox>

@@ -27,8 +27,8 @@
                         v-model="password"
                         type="password"
                         name="password"
-                        label="密码"
-                        placeholder="密码"
+                        label="新密码"
+                        placeholder="新密码"
                         :rules="[{ pattern: /^.{6,}$/, message: '请填写密码，要求不少于6位字符' }]"
                     />
                     <van-field

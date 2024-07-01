@@ -114,7 +114,7 @@ const orderSubmit = () =>{
         if(res.data.code === 60000){
             showSuccessToast('购买成功！');
             //跳转订单页面
-            router.push({ path:'/MineOrder' })
+            router.replace({ path:'/MineOrder' })
         }
     })
 }

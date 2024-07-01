@@ -68,7 +68,7 @@
       <!-- 第三部分 -->
       <div class="detail-footer">
           <van-action-bar :placeholder="true">
-              <van-action-bar-icon icon="bag" text="购物袋" badge="8" />
+              <van-action-bar-icon icon="bag" text="购物袋" :badge="shopcartCount" />
               <van-action-bar-icon :icon="findlike ? 'like' : 'like-o'" :text="findlike ? '已收藏' : '收藏'" color="#e4393c" @click="productLike"/>
               <van-action-bar-button color="#0c34ba" type="warning" text="加入购物袋" @click="Addshopcart"/>
           </van-action-bar>
@@ -78,7 +78,7 @@
 
 <script setup>
 // 导入vue相关包
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 // 导入axios
 import axiosInstance from "../utils/request";
 import { useRoute } from "vue-router";
@@ -184,6 +184,7 @@ const Addshopcart = () =>{
   }).then(function(res){
     console.log(res)
     showSuccessToast('添加购物袋成功！')
+    getshopcartCount()
   })
 }
 
@@ -223,6 +224,17 @@ const productLike = () => {
     })
   }
 }
+
+//查询购物车商品总数量
+const shopcartCount = ref()
+const getshopcartCount = () =>{
+  axiosInstance.get('/shopcartCount',{}).then((res) =>{
+    if(res.data.code === 4000){
+      shopcartCount.value = res.data.result
+    }
+  })
+}
+getshopcartCount()
 </script>
 
 <!-- scoped属性代表让当前样式成为局部样式, 仅对当前组件有效 -->
