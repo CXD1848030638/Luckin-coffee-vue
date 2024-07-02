@@ -30,7 +30,19 @@ export const useCounterStore = defineStore('counter', () => {
     address.value = val
   }
 
+  //保存当前用户的用户昵称
+  const username = ref()
+  const setUsername = (val) =>{
+    username.value = val
+  }
+
+  //保存当前用户的用户简介
+  const userprofile = ref()
+  const setUserprofile = (val) =>{
+    userprofile.value = val
+  }
+
   // const doubleCount = computed(() => count.value * 2)
 
-  return { cartsList, setCartsList, tokenString, setToken, show, setShow, address, setAddress}
+  return { cartsList, setCartsList, tokenString, setToken, show, setShow, address, setAddress, username, setUsername, userprofile, setUserprofile}
 })

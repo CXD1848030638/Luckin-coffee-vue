@@ -20,11 +20,19 @@
             </div>
             <div class="content">
                 <div>昵称</div>
-                <div>{{ UserInfo.nickName }}</div>
+                <div>
+                    <van-cell-group inset>
+                        <van-field v-model="username" input-align="right" @blur="changeUsername"/>
+                    </van-cell-group>
+                </div>
             </div>
             <div class="content">
                 <div>简介</div>
-                <div style="color: #a09d9c;">{{ UserInfo.desc }}</div>
+                <div style="color: #a09d9c;">
+                    <van-cell-group inset>
+                        <van-field v-model="userprofile" @blur="changeUserprofile"/>
+                    </van-cell-group>
+                </div>
             </div>
         </div>
     </div>
@@ -35,9 +43,55 @@ import { computed, ref } from 'vue'
 import axiosInstance from '../../utils/request';
 import { showFailToast, showToast, showLoadingToast } from 'vant';
 
+//引入pinia状态管理工具
+import { useCounterStore } from '@/stores/counter';
+const piniaStore = useCounterStore()
+
 //返回上一页面
 const onClickLeft = () =>{
     history.back()
+}
+
+//初始化输入框里的内容
+const username = ref()
+//当输入框失去焦点时修改昵称
+const changeUsername = () =>{
+    const piniaUsername = piniaStore.username
+    if(username.value && username.value != piniaUsername){
+        axiosInstance.post('/updateNickName',{
+            nickName: username.value
+        }).then((res)=>{
+            //修改昵称成功将新昵称存入pinia
+            if(res.data.code == 'C001'){
+                piniaStore.setUsername(res.data.nickName)
+            }
+        })
+    }
+    if(!username.value){
+        showToast('修改昵称失败，昵称不能为空！')
+        username.value = piniaStore.username
+    }
+}
+
+//初始化简介简介里的内容
+const userprofile = ref()
+//当输入框失去焦点时修改简介
+const changeUserprofile = () =>{
+    const piniaUserprofile = piniaStore.userprofile
+    if(userprofile.value && userprofile.value != piniaUserprofile){
+        axiosInstance.post('/updateDesc',{
+            desc: userprofile.value
+        }).then((res)=>{
+            //修改昵称成功将新昵称存入pinia
+            if(res.data.code == 'D001'){
+                piniaStore.setUserprofile(res.data.desc)
+            }
+        })
+    }
+    if(!userprofile.value){
+        showToast('修改简介失败，简介不能为空！')
+        userprofile.value = piniaStore.userprofile
+    }
 }
 
 //获取用户信息
@@ -46,6 +100,12 @@ axiosInstance.get('/findAccountInfo',{}).then(function(res){
     UserInfo.value = res.data.result[0]
     // console.log(res.data.result[0])
     fileList.value[0].url = res.data.result[0].userImg
+    username.value = res.data.result[0].nickName
+    userprofile.value = res.data.result[0].desc
+    //将用户昵称存入pinia
+    piniaStore.setUsername(res.data.result[0].nickName)
+    //将用户简介存入pinia
+    piniaStore.setUserprofile(res.data.result[0].desc)
 })
 
 //头像上传
@@ -85,35 +145,6 @@ const afterRead = (file) =>{
 
 // console.log(fileList.value[0].url)
 
-
-//   修改昵称接口
-//   请求地址：http://www.kangliuyong.com:10002/updateNickName
-//   请求类型： POST
-//   请求参数： {
-//     appkey: 你的appkey,
-//     tokenString: token字符串,
-//     nickName: 你的昵称
-//   }
-
-//   修改简介接口
-//   请求地址：http://www.kangliuyong.com:10002/updateDesc
-//   请求类型： POST
-//   请求参数： {
-//     appkey: 你的appkey,
-//     tokenString: token字符串,
-//     desc: 简介
-//   }
-// axiosInstance.post('/updateNickName',{
-//     nickName: '陈凯东'
-// }).then((res)=>{
-//     console.log(res)
-// })
-
-// axiosInstance.post('/updateDesc',{
-//     desc: '发财！发财！我要发财！'
-// }).then((res)=>{
-//     console.log(res)
-// })
 </script>
 
 <style scoped>
@@ -141,6 +172,7 @@ const afterRead = (file) =>{
     padding: 0 10px;
     font-size: 15px;
     border-bottom: 2px #f9f9fa solid;
+    user-select: none;
 }
 .userImg{
     /* width: 40px;
@@ -154,5 +186,12 @@ const afterRead = (file) =>{
     padding: 10px 10px;
     /* height: 90px; */
     border-bottom: none;
+}
+
+.content /deep/ .van-field{
+    padding: 10px 0;
+}
+.content /deep/ .van-cell-group--inset{
+    margin: 0;
 }
 </style>
