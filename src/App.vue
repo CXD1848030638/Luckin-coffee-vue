@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 // 监听路由参数，不是页面跳转！！！页面跳转是UseRouter
 import { useRoute } from 'vue-router';
 // import { computed } from 'vue';

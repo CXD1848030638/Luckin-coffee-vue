@@ -83,7 +83,21 @@ const router = createRouter({
       meta:{
         isShowTabBar:false,
         isLogin:true
-      }
+      },
+      children:[
+        {
+          path:'orderall',
+          component:()=> import('@/views/Mine/Order/OrderAll.vue'),
+        },
+        {
+          path:'ordergoing',
+          component:()=> import('@/views/Mine/Order/OrderGoing.vue'),
+        },
+        {
+          path:'ordercompleted',
+          component:()=> import('@/views/Mine/Order/OrderCompleted.vue'),
+        }
+      ]
     },
     {
       path:'/MineLike',
