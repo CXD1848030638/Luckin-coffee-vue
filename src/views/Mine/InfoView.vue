@@ -74,7 +74,7 @@ const afterRead = (file) =>{
             message: '加载中...',
             forbidClick: true,
         });
-        if(res.data.code == 'H001'){
+        if(res.data.code == 'I001'){
             showToast('头像上传成功！')
         }else{
             showFailToast('头像上传失败')
