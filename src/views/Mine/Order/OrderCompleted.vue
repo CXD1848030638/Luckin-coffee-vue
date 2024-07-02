@@ -1,38 +1,43 @@
 <template>
-    <div v-if="orderlist.length > 0">
-        <div class="text">订单信息</div>
-        <div>
-            <div v-for="(o,index) in reduceOrder" :key="index" class="reduceOrder">
-                <div class="orderNo">
-                    <div class="orderoid">订单编号：{{ o.oid }}</div>
-                    <div v-if="o.status == 1" style="cursor: pointer;">确认收货</div>
-                    <div v-else>已完成<van-icon name="delete-o" style="margin-left: 5px;" @click="deleteOid(o.oid)"/></div>
-                </div>
-                <div class="orderInfo">
-                    <div class="orderTab" v-for="(d,index) in o.orders" :key="index">
-                        <div class="orderImg"><img :src="d.smallImg" alt=""></div>
-                        <div class="Infotext">
-                            <div class="infoChs">
-                                <div>{{ d.name }}</div>
-                                <div>{{ d.rule }}</div>
-                            </div>
-                            <div class="infoEns">{{ d.enname }}</div>
-                            <div class="infoPrice">
-                                <div>￥{{ d.price }}</div>
-                                <div><van-icon name="cross"/>{{ d.count }}</div>
+    <van-loading v-if="showLoading" text-color="#0c34ba" class="van-loading">
+        加载中...
+    </van-loading>
+    <div v-else>
+        <div v-if="orderlist.length > 0">
+            <div class="text">订单信息</div>
+            <div>
+                <div v-for="(o,index) in reduceOrder" :key="index" class="reduceOrder">
+                    <div class="orderNo">
+                        <div class="orderoid">订单编号：{{ o.oid }}</div>
+                        <div v-if="o.status == 1" style="cursor: pointer;">确认收货</div>
+                        <div v-else>已完成<van-icon name="delete-o" style="margin-left: 5px;" @click="deleteOid(o.oid)"/></div>
+                    </div>
+                    <div class="orderInfo">
+                        <div class="orderTab" v-for="(d,index) in o.orders" :key="index">
+                            <div class="orderImg"><img :src="d.smallImg" alt=""></div>
+                            <div class="Infotext">
+                                <div class="infoChs">
+                                    <div>{{ d.name }}</div>
+                                    <div>{{ d.rule }}</div>
+                                </div>
+                                <div class="infoEns">{{ d.enname }}</div>
+                                <div class="infoPrice">
+                                    <div>￥{{ d.price }}</div>
+                                    <div><van-icon name="cross"/>{{ d.count }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="orderTime">2023-05-01 18:22:30</div>
-                <div class="orderCount">
-                    <div>共计 {{ computedCount(o) }} 件商品</div>
-                    <div>订单金额：￥{{ computedPrice(o) }}</div>
+                    <div class="orderTime">2023-05-01 18:22:30</div>
+                    <div class="orderCount">
+                        <div>共计 {{ computedCount(o) }} 件商品</div>
+                        <div>订单金额：￥{{ computedPrice(o) }}</div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div v-else><van-empty description="您还未购买商品" /></div>
     </div>
-    <div v-else><van-empty description="您还未购买商品" /></div>
 </template>
 
 <script setup>
@@ -40,9 +45,13 @@ import { ref, watchEffect } from 'vue';
 import axiosInstance from "@/utils/request";
 import { showConfirmDialog, showFailToast, showSuccessToast } from 'vant';
 
+//加载动画
+const showLoading = ref(false)
+
 //查询全部订单
 const orderlist = ref([])
 const getOrderList = () =>{
+    showLoading.value = true;
     axiosInstance.get('/findOrder',{
         params:{
             //其中 status 值为 0, 1, 2 ==> 0: 全部，1: 进行中，2: 已完成
@@ -50,7 +59,9 @@ const getOrderList = () =>{
         }
     }).then((res) =>{
         orderlist.value = res.data.result
-    })
+    }).finally(() => {
+        showLoading.value = false; // 请求完成后隐藏 loading
+    });
 }
 getOrderList()
 
@@ -242,4 +253,11 @@ const deleteOid = (val) =>{
     font-weight: 600;
 }
 
+/* 加载动画 */
+.van-loading{
+    position: absolute;
+    left: 38%;
+    top: 52%;
+    color: #0c34ba
+}
 </style>
