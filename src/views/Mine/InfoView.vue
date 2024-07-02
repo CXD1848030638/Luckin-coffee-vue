@@ -63,10 +63,12 @@ const Typeresult = computed(()=>{
 
 //定义头像上传后的回调函数
 const afterRead = (file) =>{
+    // 去除 base64 编码的前缀部分
+    const base64WithoutPrefix = file.content.replace(/^data:image\/\w+;base64,/, '');
     imageType.value = file.file.type
     axiosInstance.post('/updateAvatar',{
         imgType: Typeresult.value,
-        serverBase64Img: file.content
+        serverBase64Img: base64WithoutPrefix
     }).then((res)=>{
         showLoadingToast({
             message: '加载中...',
